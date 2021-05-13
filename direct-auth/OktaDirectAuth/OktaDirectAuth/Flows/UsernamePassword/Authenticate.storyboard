@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ari-Rk-Rr8">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Sign in-->
+        <scene sceneID="jHf-Ff-GFy">
+            <objects>
+                <viewController storyboardIdentifier="AuthenticateViewController" id="4y4-Kj-3yl" customClass="AuthenticateViewController" customModule="OktaDirectAuth" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8vX-vk-I0D">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" contentInsetAdjustmentBehavior="always" translatesAutoresizingMaskIntoConstraints="NO" id="BCX-xu-Uc6">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="zdD-pO-QOk">
+                                        <rect key="frame" x="48" y="48" width="318" height="230.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7fj-3M-edu">
+                                                <rect key="frame" x="24" y="24" width="270" height="46"/>
+                                                <subviews>
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTP-f9-0Sg">
+                                                        <rect key="frame" x="0.0" y="0.0" width="270" height="20.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" name="signin-color-deepGray"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="jappleseed@example.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ezi-5c-wQl">
+                                                        <rect key="frame" x="0.0" y="20.5" width="270" height="25.5"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="i3P-pj-3Xc" id="WiD-hN-mKG"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Eoh-Sk-5Gh">
+                                                <rect key="frame" x="24" y="94" width="270" height="44.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAO-8s-Dwt">
+                                                        <rect key="frame" x="0.0" y="0.0" width="270" height="20.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" name="signin-color-deepGray"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="•••••••" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZAA-OU-vu8">
+                                                        <rect key="frame" x="0.0" y="20.5" width="270" height="24"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="MRS-FO-XyW" id="f2N-qr-Opy"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dv-3k-GMj" customClass="SigninButton" customModule="OktaDirectAuth" customModuleProvider="target">
+                                                <rect key="frame" x="24" y="162.5" width="270" height="44"/>
+                                                <color key="backgroundColor" name="signin-color-primary"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                                                <state key="normal" title="Next">
+                                                    <color key="titleColor" name="signin-color-primary-inverted"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="nextAction:" destination="4y4-Kj-3yl" eventType="touchUpInside" id="PZp-vP-JGF"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" name="signin-color-primary-inverted"/>
+                                        <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="signin-color-primary"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="zdD-pO-QOk" firstAttribute="bottom" secondItem="aoZ-DL-EJ5" secondAttribute="bottom" id="EYH-3o-FK4"/>
+                                    <constraint firstItem="Uh4-JF-SVO" firstAttribute="trailing" secondItem="zdD-pO-QOk" secondAttribute="trailing" constant="48" id="Fgn-pJ-4B0"/>
+                                    <constraint firstItem="zdD-pO-QOk" firstAttribute="leading" secondItem="Uh4-JF-SVO" secondAttribute="leading" constant="48" id="XkE-9B-VM9"/>
+                                    <constraint firstItem="zdD-pO-QOk" firstAttribute="top" secondItem="aoZ-DL-EJ5" secondAttribute="top" constant="48" id="xhY-2W-pPr"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="aoZ-DL-EJ5"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Uh4-JF-SVO"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9uv-9u-pfI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="BCX-xu-Uc6" firstAttribute="leading" secondItem="8vX-vk-I0D" secondAttribute="leading" id="6tO-ZU-BkF"/>
+                            <constraint firstAttribute="trailing" secondItem="BCX-xu-Uc6" secondAttribute="trailing" id="8Q9-Zn-IRZ"/>
+                            <constraint firstAttribute="bottom" secondItem="BCX-xu-Uc6" secondAttribute="bottom" id="EMD-sm-I66"/>
+                            <constraint firstItem="BCX-xu-Uc6" firstAttribute="top" secondItem="8vX-vk-I0D" secondAttribute="top" id="gMH-Os-RXh"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Sign in" id="4sB-9h-gEh">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="WaP-qo-BSn">
+                            <connections>
+                                <action selector="cancelAction:" destination="4y4-Kj-3yl" id="ayC-Ks-URD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="nextButton" destination="2dv-3k-GMj" id="vug-lM-Ptv"/>
+                        <outlet property="passwordField" destination="ZAA-OU-vu8" id="iFo-kv-fWW"/>
+                        <outlet property="scrollView" destination="BCX-xu-Uc6" id="e2g-qr-yPb"/>
+                        <outlet property="usernameField" destination="Ezi-5c-wQl" id="hKo-lc-LgU"/>
+                        <segue destination="IrC-Rz-Iq6" kind="show" id="h8W-TQ-bTW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t1Z-Bu-KgF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <customObject id="i3P-pj-3Xc" userLabel="Username Field Helper" customClass="FieldHelper" customModule="OktaDirectAuth" customModuleProvider="target">
+                    <connections>
+                        <outlet property="firstResponder" destination="Ezi-5c-wQl" id="cKG-CI-7cf"/>
+                        <outlet property="label" destination="BTP-f9-0Sg" id="V8C-sO-fau"/>
+                        <outlet property="nextResponder" destination="ZAA-OU-vu8" id="XLa-rH-ZnT"/>
+                    </connections>
+                </customObject>
+                <customObject id="MRS-FO-XyW" userLabel="Password Field Helper" customClass="FieldHelper" customModule="OktaDirectAuth" customModuleProvider="target">
+                    <connections>
+                        <outlet property="firstResponder" destination="ZAA-OU-vu8" id="t9K-Vg-hTG"/>
+                        <outlet property="label" destination="dAO-8s-Dwt" id="iiz-cd-HDP"/>
+                        <outlet property="nextResponder" destination="2dv-3k-GMj" id="xYb-6c-jcG"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="3633.3333333333335" y="146.65178571428569"/>
+        </scene>
+        <!--Change Password-->
+        <scene sceneID="UhM-Kh-lm2">
+            <objects>
+                <viewController storyboardIdentifier="ChangePassword" id="IrC-Rz-Iq6" customClass="NewPasswordViewController" customModule="OktaDirectAuth" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="m7U-Ue-3Sz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" contentInsetAdjustmentBehavior="always" translatesAutoresizingMaskIntoConstraints="NO" id="ZCB-x5-4KF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" axis="vertical" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="hkR-2K-d6J">
+                                        <rect key="frame" x="48" y="48" width="318" height="160.5"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NO2-CC-d2b">
+                                                <rect key="frame" x="24" y="24" width="270" height="44.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="46Q-J8-9r2">
+                                                        <rect key="frame" x="0.0" y="0.0" width="270" height="20.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" name="signin-color-deepGray"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="•••••••" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bva-OZ-YrW">
+                                                        <rect key="frame" x="0.0" y="20.5" width="270" height="24"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="MRS-FO-XyW" id="071-EM-cot"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ov3-fP-wBf" customClass="SigninButton" customModule="OktaDirectAuth" customModuleProvider="target">
+                                                <rect key="frame" x="24" y="92.5" width="270" height="44"/>
+                                                <color key="backgroundColor" name="signin-color-primary"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                <inset key="contentEdgeInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                                                <state key="normal" title="Next">
+                                                    <color key="titleColor" name="signin-color-primary-inverted"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="nextAction:" destination="IrC-Rz-Iq6" eventType="touchUpInside" id="CGt-b6-Vja"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" name="signin-color-primary-inverted"/>
+                                        <edgeInsets key="layoutMargins" top="24" left="24" bottom="24" right="24"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                <real key="value" value="1"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="signin-color-primary"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="hkR-2K-d6J" firstAttribute="bottom" secondItem="Mkd-SW-PlL" secondAttribute="bottom" id="93V-bI-jAl"/>
+                                    <constraint firstItem="hkR-2K-d6J" firstAttribute="top" secondItem="Mkd-SW-PlL" secondAttribute="top" constant="48" id="KKH-1i-P2Y"/>
+                                    <constraint firstItem="lFn-MF-kpm" firstAttribute="trailing" secondItem="hkR-2K-d6J" secondAttribute="trailing" constant="48" id="VzH-8m-g3P"/>
+                                    <constraint firstItem="hkR-2K-d6J" firstAttribute="leading" secondItem="lFn-MF-kpm" secondAttribute="leading" constant="48" id="j0E-gi-yNa"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Mkd-SW-PlL"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="lFn-MF-kpm"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ewo-Bh-SwE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ZCB-x5-4KF" secondAttribute="trailing" id="fsh-mn-EbL"/>
+                            <constraint firstItem="ZCB-x5-4KF" firstAttribute="top" secondItem="m7U-Ue-3Sz" secondAttribute="top" id="kFl-AN-Sru"/>
+                            <constraint firstItem="ZCB-x5-4KF" firstAttribute="leading" secondItem="m7U-Ue-3Sz" secondAttribute="leading" id="w0k-Mh-XMb"/>
+                            <constraint firstAttribute="bottom" secondItem="ZCB-x5-4KF" secondAttribute="bottom" id="z9F-PC-4h9"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Change Password" id="reX-Un-0kk">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="goX-Wd-BfG">
+                            <connections>
+                                <action selector="cancelAction:" destination="IrC-Rz-Iq6" id="PAU-Lj-fd0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="nextButton" destination="ov3-fP-wBf" id="GYx-xr-XFj"/>
+                        <outlet property="passwordField" destination="bva-OZ-YrW" id="SL1-OK-bAx"/>
+                        <outlet property="scrollView" destination="ZCB-x5-4KF" id="pjs-x2-bxF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nd9-wm-p56" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <customObject id="GwB-Ef-1yz" userLabel="New Password Field Helper" customClass="FieldHelper" customModule="OktaDirectAuth" customModuleProvider="target">
+                    <connections>
+                        <outlet property="firstResponder" destination="bva-OZ-YrW" id="dOP-RT-2EI"/>
+                        <outlet property="label" destination="46Q-J8-9r2" id="OSw-Yx-VJT"/>
+                        <outlet property="nextResponder" destination="ov3-fP-wBf" id="nwX-bv-qKb"/>
+                    </connections>
+                </customObject>
+            </objects>
+            <point key="canvasLocation" x="4471.0144927536239" y="146.65178571428569"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="FJE-Ek-h6u">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ari-Rk-Rr8" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="DRB-4n-CKX">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4y4-Kj-3yl" kind="relationship" relationship="rootViewController" id="Q4E-FV-FVR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YFx-lR-C8F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2723.1884057971015" y="146.65178571428569"/>
+        </scene>
+    </scenes>
+    <designables>
+        <designable name="2dv-3k-GMj">
+            <size key="intrinsicContentSize" width="43" height="44"/>
+        </designable>
+        <designable name="ov3-fP-wBf">
+            <size key="intrinsicContentSize" width="43" height="44"/>
+        </designable>
+    </designables>
+    <resources>
+        <namedColor name="signin-color-deepGray">
+            <color red="0.25490196078431371" green="0.25490196078431371" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="signin-color-primary">
+            <color red="0.0" green="0.16078431372549021" blue="0.47843137254901963" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="signin-color-primary-inverted">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

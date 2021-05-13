@@ -13,10 +13,24 @@
 import UIKit
 import OktaIdx
 import OktaIdxAuth
+import AuthenticationServices
 
 extension Notification.Name {
     static let authenticationSuccessful = Notification.Name("AuthenticationSuccessful")
     static let authenticationFailed = Notification.Name("AuthenticationFailed")
+}
+
+protocol OnboardingCoordinator {
+    
+}
+
+enum OnboardingViewType {
+    case landing
+    case usernameAndPassword
+    case changePassword(response: OktaIdxAuth.Response)
+    case registration
+    case selectAuthenticator
+    case profile
 }
 
 class OnboardingManager {
@@ -29,6 +43,8 @@ class OnboardingManager {
     weak var windowScene: UIWindowScene?
     private(set) var onboardingWindow: UIWindow?
     let configuration: Configuration
+    
+    private var currentWorkflowCoordinator: WorkflowCoordinator?
     
     private var _currentUser: User? {
         didSet {
@@ -59,6 +75,15 @@ class OnboardingManager {
             defaults.synchronize()
         }
     }
+    
+    lazy var auth: OktaIdxAuth = OktaIdxAuth(issuer: configuration.issuer,
+                                             clientId: configuration.clientId,
+                                             clientSecret: nil,
+                                             scopes: configuration.scopes,
+                                             redirectUri: configuration.redirectUri,
+                                             completion: { (token, error) in
+                                                self.completed(with: token, error: error)
+                                             })
         
     struct Configuration {
         let issuer: String
@@ -88,49 +113,78 @@ class OnboardingManager {
                                        scopes: scopes.components(separatedBy: " "),
                                        redirectUri: redirectUri))
     }
+    
+    func showWorkflow(_ type: OnboardingViewType) {
+        switch type {
+        case .landing:
+            currentWorkflowCoordinator = LandingCoordinator(auth: auth)
+            guard let controller = currentWorkflowCoordinator?.viewController else {
+                return
+            }
+
+            onboardingWindow?.rootViewController = controller
+            onboardingWindow?.makeKeyAndVisible()
+            
+        case .usernameAndPassword:
+            currentWorkflowCoordinator = AuthenticateCoordinator(auth: auth)
+            guard let controller = currentWorkflowCoordinator?.viewController else {
+                return
+            }
+
+            onboardingWindow?.rootViewController?.present(controller, animated: true)
+        case .changePassword(let response):
+            currentWorkflowCoordinator = NewPasswordCoordinator(response: response)
+            
+            guard let controller = currentWorkflowCoordinator?.viewController else {
+                return
+            }
+            
+            onboardingWindow?.rootViewController?.present(controller, animated: true)
+            
+        case .registration:
+            currentWorkflowCoordinator = RegisterCoordinator(auth: auth)
+            
+            guard let controller = currentWorkflowCoordinator?.viewController else {
+                return
+            }
+
+            onboardingWindow?.rootViewController?.present(controller, animated: true)
+            
+        case .profile:
+            currentWorkflowCoordinator = ProfileCoordinator(currentUser: currentUser)
+            
+            guard let controller = currentWorkflowCoordinator?.viewController else {
+                return
+            }
+
+            onboardingWindow?.rootViewController = controller
+            onboardingWindow?.makeKeyAndVisible()
+            
+        default:
+            break
+        }
+    }
 
     func show(in scene: UIWindowScene? = nil) {
-        guard let windowScene = scene ?? self.windowScene else { return }
-        guard onboardingWindow == nil else { return }
-        
-        let storyboard = UIStoryboard(name: "Onboarding", bundle: nil)
-        guard let rootViewController = storyboard.instantiateInitialViewController() as? UINavigationController,
-              var topViewController = rootViewController.topViewController as? UIViewController & SigninController
+        guard let windowScene = scene ?? self.windowScene,
+              onboardingWindow == nil
         else {
             return
         }
         
-        topViewController.auth = OktaIdxAuth(issuer: configuration.issuer,
-                                             clientId: configuration.clientId,
-                                             clientSecret: nil,
-                                             scopes: configuration.scopes,
-                                             redirectUri: configuration.redirectUri,
-                                             completion: { (token, error) in
-                                                self.completed(with: token, error: error)
-                                             })
-        
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = rootViewController
-        window.makeKeyAndVisible()
         onboardingWindow = window
+        
+        if currentUser == nil {
+            showWorkflow(.landing)
+        } else {
+            showWorkflow(.profile)
+        }
         
         NotificationCenter.default.addObserver(forName: .authenticationSuccessful,
                                                object: nil,
                                                queue: .main) { (notification) in
-            self.dismiss(animated: true)
-        }
-    }
-    
-    func dismiss(animated: Bool = true) {
-        guard let onboardingWindow = onboardingWindow else { return }
-        if animated {
-            UIView.animate(withDuration: 0.33) {
-                onboardingWindow.alpha = 0
-            } completion: { _ in
-                self.onboardingWindow = nil
-            }
-        } else {
-            self.onboardingWindow = nil
+            self.showWorkflow(.profile)
         }
     }
     
@@ -140,16 +194,11 @@ class OnboardingManager {
             return
         }
         
-        let auth = OktaIdxAuth(issuer: configuration.issuer,
-                               clientId: configuration.clientId,
-                               clientSecret: nil,
-                               scopes: configuration.scopes,
-                               redirectUri: configuration.redirectUri,
-                               completion: { (_, _) in
-                               })
         auth.revokeTokens(token: user.token.accessToken,
                           type: .accessAndRefreshToken) { (response, error) in
             completion(response?.status == .tokenRevoked, error)
+            
+            self.showWorkflow(.landing)
         }
     }
     

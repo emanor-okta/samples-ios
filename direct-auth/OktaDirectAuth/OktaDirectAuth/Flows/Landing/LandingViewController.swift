@@ -19,7 +19,6 @@ protocol SigninController {
     var response: OktaIdxAuth.Response? { get set }
     
     func show(error: Error)
-    func showController(for response: OktaIdxAuth.Response, with storyboardId: String)
 }
 
 extension SigninController where Self: UIViewController {
@@ -34,20 +33,11 @@ extension SigninController where Self: UIViewController {
         }))
         present(alert, animated: true)
     }
-    
-    func showController(for response: OktaIdxAuth.Response, with storyboardId: String) {
-        guard let navigationController = navigationController,
-              var viewController = storyboard?.instantiateViewController(identifier: storyboardId) as? UIViewController & SigninController
-        else {
-            show(error: OnboardingError.missingViewController)
-            return
-        }
-        
-        viewController.auth = auth
-        viewController.response = response
-        
-        navigationController.setViewControllers([viewController], animated: true)
-    }
+}
+
+protocol LandingViewControllerDelegate: AnyObject {
+    func show(workflow: OnboardingViewType)
+    func performSocialAuth(from controller: UIViewController & SigninController & ASWebAuthenticationPresentationContextProviding)
 }
 
 class LandingViewController: UIViewController, SigninController {
@@ -57,37 +47,25 @@ class LandingViewController: UIViewController, SigninController {
     @IBOutlet weak private(set) var footerView: UIView!
     var auth: OktaIdxAuth?
     var response: OktaIdxAuth.Response?
+    
+    weak var delegate: LandingViewControllerDelegate?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-        
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        var targetController = segue.destination
-        if let targetNavigationController = targetController as? UINavigationController,
-           let topController = targetNavigationController.topViewController
-        {
-            targetController = topController
-        }
-        
-        if var signinController = targetController as? SigninController {
-            signinController.auth = auth
-        }
+    
+    @IBAction private func usernameAndPasswordSignIn() {
+        delegate?.show(workflow: .usernameAndPassword)
     }
     
-    @IBAction func socialAuth() {
-        auth?.socialAuth(with: OktaIdxAuth.SocialAuth.Options(presentationContext: self, prefersEphemeralSession: false)) { [weak self] (response, error) in
-            if let error = error {
-                self?.show(error: error)
-            }
-        }
+    @IBAction private func socialAuth() {
+        delegate?.performSocialAuth(from: self)
     }
 }
 
 extension LandingViewController: ASWebAuthenticationPresentationContextProviding {
-    
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         view.window ?? UIWindow()
     }

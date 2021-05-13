@@ -13,31 +13,23 @@
 import UIKit
 import OktaIdxAuth
 
-class NewPasswordViewController: UIViewController, SigninController {
-    @IBOutlet weak private(set) var scrollView: UIScrollView!
-    @IBOutlet weak private(set) var passwordField: UITextField!
-    @IBOutlet weak private(set) var nextButton: UIButton!
-
-    var auth: OktaIdxAuth?
-    var response: OktaIdxAuth.Response?
-
-    @IBAction private func cancelAction(_ sender: Any) {
-        dismiss(animated: true)
-    }
+final class NewPasswordCoordinator: WorkflowCoordinator {
+    private let response: OktaIdxAuth.Response
     
-    @IBAction private func nextAction(_ sender: Any) {
-        guard let password = passwordField.text,
-              let response = response
-        else { return }
+    lazy var viewController: UIViewController = {
+        let storyboard = UIStoryboard(name: "Authenticate", bundle: nil)
         
-        response.change(password: password) { (response, error) in
-            guard let response = response else {
-                self.show(error: error ?? OnboardingError.missingResponse)
-                return
-            }
-
-            self.handle(response: response)
+        guard let viewController = storyboard.instantiateViewController(identifier: "ChangePassword") as? NewPasswordViewController else {
+            fatalError("View Controller must exist")
         }
+        
+        viewController.delegate = self
+        
+        return viewController
+    }()
+    
+    init(response: OktaIdxAuth.Response) {
+        self.response = response
     }
     
     private func handle(response: OktaIdxAuth.Response) {
@@ -52,6 +44,19 @@ class NewPasswordViewController: UIViewController, SigninController {
             break
         case .operationUnavailable:
             break
+        }
+    }
+}
+
+extension NewPasswordCoordinator: NewPasswordViewControllerDelegate {
+    func change(from viewController: UIViewController & SigninController, password: String) {
+        response.change(password: password) { (response, error) in
+            guard let response = response else {
+                viewController.show(error: error ?? OnboardingError.missingResponse)
+                return
+            }
+
+            self.handle(response: response)
         }
     }
 }

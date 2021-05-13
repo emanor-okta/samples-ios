@@ -38,14 +38,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        guard let onboardingManager = OnboardingManager.shared,
-              let windowScene = scene as? UIWindowScene,
-              onboardingManager.currentUser == nil
-        else {
+        guard let windowScene = scene as? UIWindowScene else {
             return
         }
 
-        onboardingManager.show(in: windowScene)
+        OnboardingManager.shared?.show(in: windowScene)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {

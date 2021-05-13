@@ -44,12 +44,18 @@ extension User.ProfileKey {
     }
 }
 
+protocol ProfileTableViewControllerDelegate: AnyObject {
+    var currentUser: User? { get }
+    
+    func onUserUpdate(_ completion: @escaping (User) -> Void)
+}
+
 class ProfileTableViewController: UITableViewController {
-    enum Section: Int {
+    private enum Section: Int {
         case profile = 0, details, signOut, count
     }
     
-    struct Row {
+    private struct Row {
         enum Kind: String {
             case destructive, disclosure, leftDetail, rightDetail
         }
@@ -66,31 +72,23 @@ class ProfileTableViewController: UITableViewController {
         }
     }
 
-    var tableContent: [Section: [Row]] = [:]
-    var user: User? {
-        didSet {
-            if let user = user {
-                DispatchQueue.main.async {
-                    self.configure(user)
-                }
-            }
-        }
-    }
+    private var tableContent: [Section: [Row]] = [:]
+    
+    weak var delegate: ProfileTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        user = OnboardingManager.shared?.currentUser
+        if let user = delegate?.currentUser {
+            configure(user)
+        }
 
-        NotificationCenter.default.addObserver(forName: .authenticationSuccessful,
-                                               object: nil,
-                                               queue: .main) { (notification) in
-            guard let user = notification.object as? User else { return }
-            self.user = user
+        delegate?.onUserUpdate { [weak self] user in
+            self?.configure(user)
         }
     }
     
-    func row(at indexPath: IndexPath) -> Row? {
+    private func row(at indexPath: IndexPath) -> Row? {
         guard let tableSection = Section(rawValue: indexPath.section),
               let row = tableContent[tableSection]?[indexPath.row]
         else {
@@ -100,7 +98,11 @@ class ProfileTableViewController: UITableViewController {
         return row
     }
     
-    func configure(_ user: User) {
+    private func configure(_ user: User?) {
+        guard let user = user else {
+            return
+        }
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .long
@@ -205,7 +207,7 @@ class ProfileTableViewController: UITableViewController {
         switch segue.identifier {
         case "TokenDetail":
             guard let target = segue.destination as? TokenDetailViewController else { break }
-            target.token = user?.token
+            target.token = delegate?.currentUser?.token
             
         default: break
         }
