@@ -81,23 +81,62 @@ class UserProfileViewController: AuthBaseViewController {
 
     @IBAction private func logoutTapped() {
         if let oidcStateManager = self.oidcStateManager {
-            let oidcClient = self.createOidcClient()
-            oidcClient?.signOutOfOkta(oidcStateManager, from: self, callback: { [weak self] error in
-                if let error = error {
-                    self?.showError(message: error.localizedDescription)
-                } else {
-                    self?.flowCoordinatorDelegate?.onLoggedOut()
-                }
-            })
+
+            print("Logging out")
+//                try oidcStateManager.removeFromSecureStorage()
+            oidcStateManager.clear()
+            self.flowCoordinatorDelegate?.onLoggedOut()
+
+
+//            let oidcClient = self.createOidcClient()
+//            oidcClient?.signOutOfOkta(oidcStateManager, from: self, callback: { [weak self] error in
+//                if let error = error {
+//                    self?.showError(message: error.localizedDescription)
+//                } else {
+//                    self?.flowCoordinatorDelegate?.onLoggedOut()
+//                }
+//            })
         }
     }
     
+
+
+    @IBAction private func postAction(/*_ sender: Any*/) {
+        let Url = String(format: "https://httpbin.org/post")
+        guard let serviceUrl = URL(string: Url) else { return }
+        let parameterDictionary = ["username" : "Test", "password" : "123456"]
+        var request = URLRequest(url: serviceUrl)
+        request.httpMethod = "POST"
+        request.setValue("Application/json", forHTTPHeaderField: "Content-Type")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameterDictionary, options: []) else {
+            return
+        }
+        request.httpBody = httpBody
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            if let response = response {
+                print(response)
+            }
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    print(json)
+                } catch {
+                    print(error)
+                }
+            }
+        }.resume()
+    }
+
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var timezoneLabel: UILabel!
     @IBOutlet weak var localeLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var viewTokensButton: UIButton!
+    @IBOutlet weak var makePostButton: UIButton!
     @IBOutlet weak var accessTokenLabel: UILabel!
     @IBOutlet weak var refreshTokenLabel: UILabel!
 }

@@ -21,7 +21,7 @@ import SVProgressHUD
 class SignInViewController: AuthBaseViewController {
 
     #warning ("Enter your Okta organization domain here")
-    var urlString = "https://{yourOktaDomain}"
+    var urlString = "https://{YOUR_OKTA_ORG}"
 
     class func instantiate() -> SignInViewController {
         let signInStoryboard = UIStoryboard(name: "SignIn", bundle: nil)
